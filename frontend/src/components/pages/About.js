@@ -53,13 +53,6 @@ const About = () => {
             </div>
           </div>
   
-          {/* Meet Our Team */}
-          <div className="max-w-4xl mt-10 text-center">
-            <h2 className="text-2xl font-semibold text-gray-800">Meet Our Team</h2>
-            <p className="text-gray-600 mt-2">
-              A passionate group of professionals committed to making online shopping effortless.
-            </p>
-          </div>
         </div>
   
         <Footer />

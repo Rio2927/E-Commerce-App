@@ -74,7 +74,7 @@ const Navbar = () => {
           <li className="cursor-pointer hover:text-blue-500"><Link to="/admin">Admin</Link></li>
           <li className="cursor-pointer hover:text-blue-500"><Link to="/about">About</Link></li>
           <li className="cursor-pointer hover:text-blue-500"><Link to="/contact">Contact</Link></li>
-          <li className="cursor-pointer hover:text-blue-500"><Link to="/cart">Cart</Link></li>
+          {/* <li className="cursor-pointer hover:text-blue-500"><Link to="/cart">Cart</Link></li> */}
           <li className="cursor-pointer hover:text-blue-500"><Link to="/createaccount">Sign Up</Link></li>
           {token ? (
             <li className="cursor-pointer hover:text-blue-500" onClick={logout}>Logout</li>

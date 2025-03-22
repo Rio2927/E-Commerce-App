@@ -1,5 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
+const baseUrl = process.env.baseUrl
+
 
 const SignUp = () => {
 
@@ -43,7 +45,7 @@ const SignUp = () => {
     }
 
 
-    fetch('http://localhost:5000/auth/signup',{
+    fetch(baseUrl + '/auth/signup',{
       method : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(signupdata)

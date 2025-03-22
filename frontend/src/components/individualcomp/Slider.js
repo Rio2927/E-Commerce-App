@@ -56,7 +56,7 @@ const Slider = ({api_url}) => {
               key={index}
               className="flex-[0_0_80%] sm:flex-[0_0_50%] lg:flex-[0_0_33%] p-2"
             >
-              <div className="Card bg-blue-900 h-80 text-white p-3 rounded-lg shadow-md border-gray-200">
+              <div className="Card bg-[#1E293B] h-80 text-white p-3 rounded-lg shadow-md border-gray-200">
                 <div className="border-solid border-2 border-white rounded-md h-36"></div>
                 <h5 className="text-center pt-2">{product.brand}</h5>
                 <div className="flex justify-between px-1 py-1">
