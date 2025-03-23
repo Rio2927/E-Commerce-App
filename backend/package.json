@@ -11,9 +11,10 @@
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.7"
   },
-  "scripts": {
-    "start": "node Index.js",
-    "dev": "nodemon Index.js"
-  }
+"scripts": {
+  "start": "node Index.js",
+  "dev": "nodemon Index.js",
+  "build": "npm install"
+}
 
 }
