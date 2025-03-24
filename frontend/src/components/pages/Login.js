@@ -1,58 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const baseUrl = process.env.REACT_APP_BASEURL;
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
 
   function login() {
-    var login_email = document.querySelector("#user-email").value;
-    var login_pw = document.querySelector("#user-pw").value;
-
-    if (!login_email || !login_pw) {
+    if (!loginEmail || !loginPassword) {
       alert("Please enter all the fields");
       return;
     }
 
-    let login_payload = {
-      email: login_email,
-      pw: login_pw,
+    const loginPayload = {
+      email: loginEmail,
+      pw: loginPassword,
     };
 
-    console.log("User-email is => ", login_email);
-
-    fetch(baseUrl + "/auth/login", {
+    fetch(`${baseUrl}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(login_payload),
+      body: JSON.stringify(loginPayload),
     })
       .then((resp) => {
-        console.log("API call successful => ", resp);
+        if (!resp.ok) {
+          throw new Error("Login failed. Please check your credentials.");
+        }
         return resp.json();
       })
       .then((data) => {
         if (data.previousUser === false) {
-          alert("No user registered with this username,please sign up");
+          alert("No user registered with this email. Please sign up.");
           return;
         }
 
         alert(data.message);
 
         const token = data.token;
-        localStorage.setItem("token", token);
         if (token) {
+          localStorage.setItem("token", token);
           navigate("/admin");
         }
       })
-      .catch((err) => console.log("Error in calling API => ", err));
+      .catch((err) => {
+        console.error("Error in API call:", err);
+        alert("An error occurred. Please try again.");
+      });
   }
 
   return (
     <div className="flex justify-center items-center h-screen">
       <button
         className="absolute right-7 top-7 border-2 px-5 py-2 rounded-md hover:bg-[#1E3A8A] hover:text-white"
-        onClick={() => (window.location.href = "/")}
+        onClick={() => navigate("/")}
       >
         Back
       </button>
@@ -62,16 +64,19 @@ const Login = () => {
           <label>Email</label>
           <input
             className="border-2 w-52 rounded-md py-1 px-1"
-            id="user-email"
-          ></input>
+            type="email"
+            value={loginEmail}
+            onChange={(e) => setLoginEmail(e.target.value)}
+          />
         </div>
         <div className="flex flex-col justify-center items-center mt-5 gap-2">
           <label>Password</label>
           <input
             className="border-2 w-52 rounded-md py-1 px-1"
-            id="user-pw"
             type="password"
-          ></input>
+            value={loginPassword}
+            onChange={(e) => setLoginPassword(e.target.value)}
+          />
         </div>
         <div className="flex flex-col justify-center items-center mt-5 gap-2">
           <button

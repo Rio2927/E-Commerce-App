@@ -1,85 +1,89 @@
-import React from 'react'
-import { useState } from 'react';
-const baseUrl = process.env.baseUrl
+import React, { useState } from 'react';
 
+const baseUrl = process.env.REACT_APP_BASEURL;
 
 const SignUp = () => {
-
-  const [storedEmail,setstoredEmail] = useState("");
-  const [storedPassword,setstoredPassword] = useState("");
-
-  const localstorageEmail = localStorage.getItem("email");
-  const localstoragePassword = localStorage.getItem("password");
-
+  const [signupEmail, setSignupEmail] = useState("");
+  const [signupPassword, setSignupPassword] = useState("");
 
   function emailValidation(email) {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
     if (emailPattern.test(email.trim())) {
-      console.log("Email Verified");
       return true;
     } else {
-      console.log("Email not Verified");
       alert("Incorrect Email");
       return false;
     }
   }
 
-  function signup () {
-
-    const signup_email = document.querySelector('#user-email').value;
-    const signup_password = document.querySelector('#user-pw').value;
-
-    if (signup_email === "" || signup_password === "") {
-        alert("All fields are required");
-        return;
+  function signup() {
+    if (!signupEmail || !signupPassword) {
+      alert("All fields are required");
+      return;
     }
 
-    if (!emailValidation(signup_email)) {
-        return; 
+    if (!emailValidation(signupEmail)) {
+      return;
     }
 
-    const signupdata = {
-      email : signup_email,
-      password : signup_password
-    }
+    const signupData = { email: signupEmail, password: signupPassword };
 
-
-    fetch(baseUrl + '/auth/signup',{
-      method : "POST",
+    fetch(`${baseUrl}/auth/signup`, {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(signupdata)
+      body: JSON.stringify(signupData),
     })
     .then((resp) => {
-      console.log("Response received:", resp);
-      return resp.json(); 
+      if (!resp.ok) {
+        throw new Error("Signup failed");
+      }
+      return resp.json();
     })
     .then((data) => {
-      console.log("Parsed data:", data); 
-      alert(`Message: ${data.message}`); 
+      alert(`Message: ${data.message}`);
     })
     .catch((err) => console.error("Fetch error:", err));
-}
+  }
 
   return (
     <div className='flex justify-center items-center h-screen'>
-      <button type="button" className='absolute right-7 top-7 border-2 px-5 py-2 rounded-md hover:bg-[#1E3A8A] hover:text-white' onClick={() => (window.location.href = "/")}>Back</button>
+      <button 
+        type="button" 
+        className='absolute right-7 top-7 border-2 px-5 py-2 rounded-md hover:bg-[#1E3A8A] hover:text-white' 
+        onClick={() => (window.location.href = "/")}
+      >
+        Back
+      </button>
       <div className='border-2 lg:w-1/4 py-8 text-center rounded-lg w-[80%]'>
         <h3>Sign Up</h3>
         <div className='flex flex-col justify-center items-center mt-5 gap-2'>
-        <label>Email</label>
-        <input className='border-2 w-52 rounded-md py-1 px-1' id='user-email'></input>
+          <label>Email</label>
+          <input 
+            className='border-2 w-52 rounded-md py-1 px-1' 
+            value={signupEmail} 
+            onChange={(e) => setSignupEmail(e.target.value)} 
+          />
         </div>
         <div className='flex flex-col justify-center items-center mt-5 gap-2'>
-        <label>Password</label>
-        <input className='border-2 w-52 rounded-md py-1 px-1' id='user-pw' type='password'></input>
+          <label>Password</label>
+          <input 
+            className='border-2 w-52 rounded-md py-1 px-1' 
+            type='password' 
+            value={signupPassword} 
+            onChange={(e) => setSignupPassword(e.target.value)}
+          />
         </div>
         <div className='flex flex-col justify-center items-center mt-5 gap-2'>
-        <button className='border-2 px-5 py-2 rounded-md hover:bg-[#1E3A8A] hover:text-white' onClick={signup}>Submit</button>
+          <button 
+            className='border-2 px-5 py-2 rounded-md hover:bg-[#1E3A8A] hover:text-white' 
+            onClick={signup}
+          >
+            Submit
+          </button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default SignUp
+export default SignUp;
